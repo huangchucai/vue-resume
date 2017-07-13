@@ -34,45 +34,21 @@
 <script>
 export default {
   name: 'resumeEditor',
-  data() {
-    return {
-      selected: 'profile',
-      resume: {
-        config: [
-          { field: 'profile', icon: 'id' },
-          { field: 'work history', icon: 'work' },
-          { field: 'education', icon: 'book' },
-          { field: 'projects', icon: 'heart' },
-          { field: 'awards', icon: 'cup' },
-          { field: 'contacts', icon: 'phone' }
-        ],
-        profile: {
-          name: 'hcc',
-          title: 'resumer',
-          city: '广州'
-        },
-        'work history': [
-          { company: 'AL', content: '我的第二份工作是' },
-          { company: 'TX', content: '我的第一份工作是' }
-        ],
-        education: [
-          { school: 'AL', content: '文字' },
-          { school: 'AL', content: '文字' }
-        ],
-        projects: [
-          { name: 'project A', content: '文字' },
-          { name: 'project B', content: '文字' }
-        ],
-        awards: [
-          { name: 'awards A', content: '文字' },
-          { name: 'awards B', content: '文字' },
-        ],
-        contacts: [
-          { contact: 'phone', content: '13812345678' },
-          { contact: 'phone', content: '138678' },
-        ]
+  computed: {
+    // 通过计算属性的get和set来改变状态
+    selected: {
+      get(){
+        return this.$store.state.selected
+      },
+      set(value){
+        return this.$store.commit('switchTab', value)
       }
+    },
+    resume() {
+      return this.$store.state.resume
     }
+  },
+  methods: {
   }
 }
 </script>
@@ -84,6 +60,8 @@ export default {
   display flex
   flex-direction row
   overflow auto
+  p 
+    white-space pre-line
   nav 
     width 80px 
     background black

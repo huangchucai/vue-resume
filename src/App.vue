@@ -20,13 +20,12 @@ import ResumeEditor from './components/ResumeEditor';
 import ResumePreview from './components/ResumePreview';
 import icons from './assets/icons';
 
+// 引入vuex
+import store from './store/index'
+
 export default {
   name: 'app',
-  data() {
-    return {
-      text: '你好'
-    };
-  },
+  store,
   created() {
     document.body.insertAdjacentHTML('afterBegin', icons);
   },
@@ -58,7 +57,7 @@ export default {
     align-self: center;
 
 #resumeEditor 
-  width: 35%;
+  min-width: 35%;
   background: #444;
 
 
