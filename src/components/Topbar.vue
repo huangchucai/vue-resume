@@ -6,7 +6,7 @@
         <!--如果已经登陆，有用户id显示-->
         <div class="userActions" v-if="logined">
           <span class="welcome">您好，{{user.username}}</span>
-          <a href="javascript:;" class="button">登出</a>
+          <a href="javascript:;" class="button" @click.prevent="signOut">登出</a>
         </div>
         <!--没有登陆-->
         <div class="userActions" v-else>
@@ -30,6 +30,7 @@
 import myDialog from './Dialog';
 import signUpForm from './SignUpForm';
 import signInForm from './SignInForm';
+import AV from '../lib/leancloud';
 export default {
   name: 'Topbar',
   data() {
@@ -52,14 +53,13 @@ export default {
     signInForm
   },
   methods: {
-    login(user) {
-      this.signUpDialogVisible = false;
-      this.$store.commit('setUser',user)
-    },
+
+    // 退出
     signOut(){
        AV.User.logOut()
        this.$store.commit('removeUser')
     },
+    // 登录
     signIn(user){
         this.signUpDialogVisible = false
        this.signInDialogVisible = false
