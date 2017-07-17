@@ -1,5 +1,6 @@
 <template>
   <div id="resumeEditor">
+    <!--对应的按钮样式-->
     <nav>
       <ol>
         <li v-for="(item,index) in resume.config" :class="{active: item.field === selected}" @click="selected = item.field">
@@ -9,14 +10,15 @@
         </li>
       </ol>
     </nav>
+    <!--编辑内容区域-->
     <ol class="panels">
       <li v-for="item in resume.config" v-show="item.field === selected">
         <div v-if="resume[item.field] instanceof Array">
-          <div class="submit" v-for="submit in resume[item.field]">
+          <div class="submit" v-for="(submit,idx) in resume[item.field]">
             <!--循环一个对象，不用写死对象的属性-->
             <div class="resumeField" v-for="(value,key) in submit">
               <label>{{key}}</label>
-              <input type="text" :value="value">
+              <input type="text" :value="value" @input="changeResumeField(`${item.field}.${idx}.${key}`,$event)">
             </div>
             <hr>
           </div>
@@ -24,7 +26,7 @@
         <div v-else class="resumeField" v-for="(value,key) in resume[item.field]">
           <label>{{key}}</label>
           <!--下面使用value会报错-->
-          <input type="text" v-model="resume[item.field][key]">  
+          <input type="text" :value="value" @input="changeResumeField(`${item.field}.${key}`,$event)">
         </div>
       </li>
     </ol>
@@ -40,6 +42,7 @@ export default {
       get(){
         return this.$store.state.selected
       },
+      // 传递额外的参数value给mutations
       set(value){
         return this.$store.commit('switchTab', value)
       }
@@ -49,6 +52,9 @@ export default {
     }
   },
   methods: {
+    changeResumeField(path,event){
+      this.$store.commit("updateResume",{path,event})
+    }
   }
 }
 </script>

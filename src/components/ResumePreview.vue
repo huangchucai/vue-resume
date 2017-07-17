@@ -72,7 +72,7 @@ export default {
     }
   },
   created() {
-    console.log(this.resume)
+    // console.log(this.resume)
   }
 }
 </script>

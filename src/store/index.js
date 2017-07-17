@@ -1,10 +1,15 @@
 import Vuex from 'vuex';
 import Vue from 'vue';
+import objectPath from 'object-path'
 
 Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     selected: 'profile',
+    user: {
+      id: '',
+      username: ''
+    },
     resume: {
       config: [
         { field: 'profile', icon: 'id' },
@@ -14,12 +19,14 @@ export default new Vuex.Store({
         { field: 'awards', icon: 'cup' },
         { field: 'contacts', icon: 'phone' }
       ],
+      // 公司对象
       profile: {
         name: 'hcc',
         title: 'resumer',
         city: '广州',
         birthday: '1992-11-01'
       },
+      // 下面都是数组结构
       workHistory: [
         {
           company: '鸡飞狗跳公司', 
@@ -54,9 +61,27 @@ export default new Vuex.Store({
       ]
     }
   },
+  // state是数据，payload是接受到的数据（负载）
   mutations: {
+    // 初始化数据
+    initState(state,payload) {
+      Object.assign(state,payload)
+    },
+    // 按钮切换效果
     switchTab(state, payload) {
-      state.selected = payload
+      state.selected = payload;
+      localStorage.setItem('state',JSON.stringify(state));
+    },
+    // 数据更新效果
+    updateResume(state,{path,event}) {
+      objectPath.set(state.resume,path,event.target.value);
+      localStorage.setItem('state', JSON.stringify(state));
+    },
+    setUser(state,payload){
+      Object.assign(state.user,payload)
+    },
+    removeUser(state) {
+      state.user.id = ''
     }
   }
 });
